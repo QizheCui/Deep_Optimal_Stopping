@@ -104,6 +104,32 @@ def create_model(d):
     )
     return model
 
+# Create a more advanced randomized neural network model
+def create_randomized_model(d):
+    """
+    Creates a more advanced randomized neural network with 3 hidden layers of 50+d units
+    Includes batch normalization and dropout layers
+    """
+    model = nn.Sequential(
+        nn.Linear(d, d+50),  # input layer
+        nn.BatchNorm1d(d+50),  # batch normalization
+        nn.ReLU(),  # activation function
+        nn.Dropout(0.5),  # dropout layer for regularization
+        nn.Linear(d+50, d+50), 
+        nn.BatchNorm1d(d+50),
+        nn.ReLU(),
+        nn.Dropout(0.5),
+        nn.Linear(d+50, d+50),
+        nn.BatchNorm1d(d+50),
+        nn.ReLU(),
+        nn.Dropout(0.5),
+        nn.Linear(d+50, 1),
+        nn.Sigmoid()
+    )
+    for param in model.parameters():
+        nn.init.normal_(param, 0, 1)  # randomize the weights
+    return model
+
 #initiates dictionaries for f,F,l at maturity time N
 #that will contain functions F (soft stopping decision),f (stopping decision) and l (stopping time) from the paper
 def fN(x):
